@@ -15,7 +15,7 @@
 @property (weak) UILabel * additionalLabel;
 @property (weak) UIView *viewAdditional;
 
-@property (weak) NSMutableString * checkAdditionalString;
+@property NSMutableString * checkAdditionalString;
 @end
 
 @implementation ViewController
@@ -50,7 +50,7 @@
 
 
 - (void) createAdditionalVerification{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(40.0, 435.0, 235.0, 95.0)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(40.0, 405.0, 240.0, 115.0)];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(102.5, 15, 32, 22)];
     UIButton *buttonOne = [UIButton buttonWithType:UIButtonTypeCustom];
     UIButton *buttonTwo = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -116,8 +116,8 @@
 
 
 - (void)createLoginAndPasswordFields {
-    UITextField *loginTextField = [[UITextField alloc] initWithFrame:CGRectMake(36.0, 250.0, 250.0, 34.0)];
-    UITextField *passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(36.0, 308.0, 250.0, 34.0)];
+    UITextField *loginTextField = [[UITextField alloc] initWithFrame:CGRectMake(36.0, 200.0, 250.0, 34.0)];
+    UITextField *passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(36.0, 268.0, 250.0, 34.0)];
     UIButton *authorizeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
     if (@available(iOS 13.0, *)) {
@@ -135,7 +135,7 @@
                         action:@selector(checkAuthDidTap)
               forControlEvents:UIControlEventTouchUpInside];
     [authorizeButton setTitle:@"Authorize" forState:UIControlStateNormal];
-    authorizeButton.frame = CGRectMake(85.0, 368.0, 156.0, 42.0);
+    authorizeButton.frame = CGRectMake(80.0, 328.0, 156.0, 42.0);
     authorizeButton.layer.borderWidth = 2.0;
     authorizeButton.layer.cornerRadius = 10.0;
     authorizeButton.layer.borderColor = [[UIColor systemBlueColor] CGColor];
@@ -286,8 +286,9 @@
     
     _loginTextField.delegate = self;
     _passwordTextField.delegate = self;
+    
     _checkAdditionalString = [NSMutableString stringWithString:@""];
-    [_viewAdditional setHidden:YES];
+    //[_viewAdditional setHidden:YES];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -336,19 +337,36 @@
     }
 }
 
+
+- (void)stateErrorForAdditional{
+    _viewAdditional.layer.borderWidth = 2.0;
+    _viewAdditional.layer.cornerRadius = 10.0;
+    _viewAdditional.layer.borderColor = [[UIColor systemRedColor] CGColor];
+}
+
 - (void)checkOneDidTap{
     [_checkAdditionalString appendString:@"1"];
-    [_additionalLabel setText: _checkAdditionalString];
+    [self checkedAdditional];
 }
 
 - (void)checkTwoDidTap{
-    [_checkAdditionalString appendString:@"2"];
-    [_additionalLabel setText: _checkAdditionalString];
+    [_checkAdditionalString appendString:@"2".mutableCopy];
+    [self checkedAdditional];
 }
 
 - (void)checkThreeDidTap{
-    [_checkAdditionalString appendString:@"3"];
-    [_additionalLabel setText: _checkAdditionalString];
+    [_checkAdditionalString appendString:@"3".mutableCopy];
+    [self checkedAdditional];
+}
+
+- (void) checkedAdditional {
+    if (_checkAdditionalString.length > 2 && ![_checkAdditionalString isEqual:@"132"]){
+        [self stateErrorForAdditional];
+        _checkAdditionalString = [NSMutableString stringWithString:@""];
+        _additionalLabel.text = @"-";
+    } else {
+        [_additionalLabel setText: _checkAdditionalString];
+    }
 }
 
 @end
