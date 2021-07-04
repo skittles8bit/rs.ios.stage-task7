@@ -50,7 +50,7 @@
 
 
 - (void) createAdditionalVerification{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(40.0, 405.0, 240.0, 115.0)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(40.0, 395.0, 240.0, 115.0)];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(102.5, 15, 32, 22)];
     UIButton *buttonOne = [UIButton buttonWithType:UIButtonTypeCustom];
     UIButton *buttonTwo = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -350,12 +350,12 @@
 }
 
 - (void)checkTwoDidTap{
-    [_checkAdditionalString appendString:@"2".mutableCopy];
+    [_checkAdditionalString appendString:@"2"];
     [self checkedAdditional];
 }
 
 - (void)checkThreeDidTap{
-    [_checkAdditionalString appendString:@"3".mutableCopy];
+    [_checkAdditionalString appendString:@"3"];
     [self checkedAdditional];
 }
 
