@@ -12,6 +12,10 @@
 @property (weak) UITextField * loginTextField;
 @property (weak) UITextField * passwordTextField;
 @property (weak) UIButton * authorizeButton;
+@property (weak) UILabel * additionalLabel;
+@property (weak) UIView *viewAdditional;
+
+@property (weak) NSMutableString * checkAdditionalString;
 @end
 
 @implementation ViewController
@@ -44,6 +48,73 @@
     _rsSchoolLabel = rsSchoolLabel;
 }
 
+
+- (void) createAdditionalVerification{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(40.0, 435.0, 235.0, 95.0)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(102.5, 15, 32, 22)];
+    UIButton *buttonOne = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *buttonTwo = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *buttonThree = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    label.textColor = [UIColor blackColor];
+    label.font = [UIFont boldSystemFontOfSize:(18.0)];
+    label.numberOfLines = 1;
+    label.text = @"-";
+    label.textAlignment = NSTextAlignmentCenter;
+    
+    [buttonOne addTarget:self
+                        action:@selector(checkOneDidTap)
+              forControlEvents:UIControlEventTouchUpInside];
+    [buttonOne setTitle:@"1" forState:UIControlStateNormal];
+    buttonOne.frame = CGRectMake(23, 45, 50.0, 50.0);
+    buttonOne.layer.borderWidth = 2.0;
+    buttonOne.layer.cornerRadius = buttonOne.frame.size.width / 2.0;
+    buttonOne.layer.borderColor = [[UIColor systemBlueColor] CGColor];
+    [buttonOne setTitleColor:[UIColor colorWithRed:0.0
+                                             green:0.0
+                                              blue:1.0
+                                             alpha:1.0]
+                                            forState:UIControlStateNormal];
+    
+    [buttonTwo addTarget:self
+                        action:@selector(checkTwoDidTap)
+              forControlEvents:UIControlEventTouchUpInside];
+    [buttonTwo setTitle:@"2" forState:UIControlStateNormal];
+    buttonTwo.frame = CGRectMake(93, 45, 50.0, 50.0);
+    buttonTwo.layer.borderWidth = 2.0;
+    buttonTwo.layer.cornerRadius = buttonOne.frame.size.width / 2.0;
+    buttonTwo.layer.borderColor = [[UIColor systemBlueColor] CGColor];
+    [buttonTwo setTitleColor:[UIColor colorWithRed:0.0
+                                             green:0.0
+                                              blue:1.0
+                                             alpha:1.0]
+                                            forState:UIControlStateNormal];
+    
+    [buttonThree addTarget:self
+                        action:@selector(checkThreeDidTap)
+              forControlEvents:UIControlEventTouchUpInside];
+    [buttonThree setTitle:@"3" forState:UIControlStateNormal];
+    buttonThree.frame = CGRectMake(163, 45, 50.0, 50.0);
+    buttonThree.layer.borderWidth = 2.0;
+    buttonThree.layer.cornerRadius = buttonOne.frame.size.width / 2.0;
+    buttonThree.layer.borderColor = [[UIColor systemBlueColor] CGColor];
+    [buttonThree setTitleColor:[UIColor colorWithRed:0.0
+                                             green:0.0
+                                              blue:1.0
+                                             alpha:1.0]
+                                            forState:UIControlStateNormal];
+    [view addSubview:label];
+    [view addSubview:buttonOne];
+    [view addSubview:buttonTwo];
+    [view addSubview:buttonThree];
+    
+    _additionalLabel = label;
+    _viewAdditional = view;
+    
+    [self.view addSubview:view];
+}
+
+
 - (void)createLoginAndPasswordFields {
     UITextField *loginTextField = [[UITextField alloc] initWithFrame:CGRectMake(36.0, 250.0, 250.0, 34.0)];
     UITextField *passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(36.0, 308.0, 250.0, 34.0)];
@@ -64,7 +135,7 @@
                         action:@selector(checkAuthDidTap)
               forControlEvents:UIControlEventTouchUpInside];
     [authorizeButton setTitle:@"Authorize" forState:UIControlStateNormal];
-    authorizeButton.frame = CGRectMake(80.0, 368, 156.0, 42.0);
+    authorizeButton.frame = CGRectMake(85.0, 368.0, 156.0, 42.0);
     authorizeButton.layer.borderWidth = 2.0;
     authorizeButton.layer.cornerRadius = 10.0;
     authorizeButton.layer.borderColor = [[UIColor systemBlueColor] CGColor];
@@ -210,11 +281,13 @@
     [super viewDidLoad];
     
     [self createRsSchoolLabel];
-
     [self createLoginAndPasswordFields];
+    [self createAdditionalVerification];
     
     _loginTextField.delegate = self;
     _passwordTextField.delegate = self;
+    _checkAdditionalString = [NSMutableString stringWithString:@""];
+    [_viewAdditional setHidden:YES];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -232,8 +305,6 @@
     
     _loginTextField.text = nil;
     _passwordTextField.text = nil;
-    
-    
 }
 
 - (void)stateError{
@@ -253,6 +324,7 @@
     [_loginTextField setEnabled:NO];
     [_authorizeButton setEnabled:NO];
 
+    [_viewAdditional setHidden:NO];
 }
 
 - (void)checkAuthDidTap{
@@ -264,6 +336,19 @@
     }
 }
 
+- (void)checkOneDidTap{
+    [_checkAdditionalString appendString:@"1"];
+    [_additionalLabel setText: _checkAdditionalString];
+}
 
+- (void)checkTwoDidTap{
+    [_checkAdditionalString appendString:@"2"];
+    [_additionalLabel setText: _checkAdditionalString];
+}
+
+- (void)checkThreeDidTap{
+    [_checkAdditionalString appendString:@"3"];
+    [_additionalLabel setText: _checkAdditionalString];
+}
 
 @end
