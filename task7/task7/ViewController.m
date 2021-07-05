@@ -130,13 +130,14 @@
     loginTextField.placeholder = @"Login";
     loginTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     loginTextField.textContentType = UITextContentTypeUsername;
-    loginTextField.keyboardType = UIKeyboardTypeDefault;
+    loginTextField.keyboardType = UIKeyboardTypeASCIICapable;
     loginTextField.returnKeyType = UIReturnKeyNext;
     loginTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     loginTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     loginTextField.layer.borderWidth = 1.5;
     loginTextField.layer.cornerRadius = 5.0;
     loginTextField.layer.borderColor = [[UIColor rsBlackCoral] CGColor];
+    loginTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     loginTextField.tag = 1;
     
     passwordTextField.borderStyle = UITextBorderStyleRoundedRect;
@@ -149,6 +150,7 @@
     passwordTextField.returnKeyType = UIReturnKeyDefault;
     passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     passwordTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     passwordTextField.layer.borderWidth = 1.5;
     passwordTextField.layer.cornerRadius = 5.0;
     passwordTextField.layer.borderColor = [[UIColor rsBlackCoral] CGColor];
