@@ -319,6 +319,11 @@
     _loginTextField.delegate = self;
     _passwordTextField.delegate = self;
     
+    if (@available(iOS 13.0, *)) {
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+    } else {
+        // Fallback on earlier versions
+    }
     self.view.backgroundColor = [UIColor whiteColor];
     _checkAdditionalString = [NSMutableString stringWithString:@""];
     [_viewAdditional setHidden:YES];
