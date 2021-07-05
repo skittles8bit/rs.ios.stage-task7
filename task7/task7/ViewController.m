@@ -7,6 +7,7 @@
 
 #import "ViewController.h"
 #import "ColorExtensions.h"
+#import "ImageExtensions.h"
 
 @interface ViewController ()
 @property (weak) UILabel * rsSchoolLabel;
@@ -25,6 +26,25 @@
 
 @implementation ViewController
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self createRsSchoolLabel];
+    [self createLoginAndPasswordFields];
+    [self createAdditionalVerification];
+    
+    _loginTextField.delegate = self;
+    _passwordTextField.delegate = self;
+    
+    if (@available(iOS 13.0, *)) {
+        self.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+    } else {
+        // Fallback on earlier versions
+    }
+    self.view.backgroundColor = [UIColor whiteColor];
+    _checkAdditionalString = [NSMutableString stringWithString:@""];
+    [_viewAdditional setHidden:YES];
+}
 
 - (void)createRsSchoolLabel {
     UILabel *rsSchoolLabel = [UILabel new];
@@ -151,12 +171,11 @@
         CGFloat spacing = 5; // the amount of spacing to appear between image and title
         authorizeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, spacing);
     } else {
-//        UIImage *image = [UIImage imageNamed:@"person"];
-//        UIImage *imageFill = [UIImage imageNamed:@"person.fill"];
-//        [authorizeButton setImage:image forState:UIControlStateNormal];
-//        [authorizeButton setImage:imageFill forState:UIControlStateHighlighted];
-//        CGFloat spacing = 5; // the amount of spacing to appear between image and title
-//        authorizeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, spacing);
+        UIImage *image = [[UIImage alloc] imageWithImage:[UIImage imageNamed:@"person"] convertToSize:CGSizeMake(17, 17)];
+        UIImage *imageFill = [[UIImage alloc] imageWithImage:[UIImage imageNamed:@"person.fill"] convertToSize:CGSizeMake(17, 17)];
+        [authorizeButton setImage:image forState:UIControlStateNormal];
+        [authorizeButton setImage:imageFill forState:UIControlStateHighlighted];
+        authorizeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 5);
     }
     
     [authorizeButton setTitle:@"Authorize" forState:UIControlStateNormal];
@@ -309,28 +328,20 @@
 //                                  constant:0].active = YES;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    [self createRsSchoolLabel];
-    [self createLoginAndPasswordFields];
-    [self createAdditionalVerification];
-    
-    _loginTextField.delegate = self;
-    _passwordTextField.delegate = self;
-    
-    if (@available(iOS 13.0, *)) {
-        self.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
-    } else {
-        // Fallback on earlier versions
-    }
-    self.view.backgroundColor = [UIColor whiteColor];
-    _checkAdditionalString = [NSMutableString stringWithString:@""];
-    [_viewAdditional setHidden:YES];
-}
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
+    return true;
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    if (textField == _passwordTextField) {
+        _passwordTextField.layer.borderColor = [[UIColor rsBlackCoral] CGColor];
+    }
+    
+    if (textField == _loginTextField) {
+        _loginTextField.layer.borderColor = [[UIColor rsBlackCoral] CGColor];
+    }
+    
     return true;
 }
 
@@ -373,6 +384,45 @@
 
     [_viewAdditional setHidden:NO];
 }
+
+
+- (void)stateErrorForAdditional{
+    _checkAdditionalString = [NSMutableString stringWithString:@""];
+    _additionalLabel.text = @"-";
+    _viewAdditional.layer.borderColor = [[UIColor rsVenetialRed] CGColor];
+}
+
+- (void)stateSeccuessForAdditional{
+    [_additionalLabel setText: _checkAdditionalString];
+    _viewAdditional.layer.borderColor = [[UIColor rsTorquoiseGreen] CGColor];
+    
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Welcome"
+                                                                   message:@"You are succesfuly authorized!"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Refresh"
+                                                            style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction * action) {
+        [self stateReady];
+    }];
+
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+
+- (void) checkedAdditional {
+    if (_checkAdditionalString.length > 2){
+        if(![_checkAdditionalString isEqual:@"132"]){
+            [self stateErrorForAdditional];
+        } else if ([_checkAdditionalString isEqual:@"132"]){
+            [self stateSeccuessForAdditional];
+        }
+    } else {
+        [_additionalLabel setText: _checkAdditionalString];
+    }
+}
+
 
 - (void)checkAuthDidTap{
     _authorizeButton.backgroundColor = [UIColor whiteColor];
@@ -421,30 +471,6 @@
     _buttonThree.backgroundColor = [UIColor whiteColor];
 }
 
-- (void)stateErrorForAdditional{
-    _checkAdditionalString = [NSMutableString stringWithString:@""];
-    _additionalLabel.text = @"-";
-    _viewAdditional.layer.borderColor = [[UIColor rsVenetialRed] CGColor];
-}
-
-- (void)stateSeccuessForAdditional{
-    [_additionalLabel setText: _checkAdditionalString];
-    _viewAdditional.layer.borderColor = [[UIColor rsTorquoiseGreen] CGColor];
-    
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Welcome"
-                                                                   message:@"You are succesfuly authorized!"
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-
-    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Refresh"
-                                                            style:UIAlertActionStyleDestructive
-                                                          handler:^(UIAlertAction * action) {
-        [self stateReady];
-    }];
-
-    [alert addAction:defaultAction];
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
 - (void)checkOneDidTap{
     [_checkAdditionalString appendString:@"1"];
     [self checkedAdditional];
@@ -464,16 +490,5 @@
 }
 
 
-- (void) checkedAdditional {
-    if (_checkAdditionalString.length > 2){
-        if(![_checkAdditionalString isEqual:@"132"]){
-            [self stateErrorForAdditional];
-        } else if ([_checkAdditionalString isEqual:@"132"]){
-            [self stateSeccuessForAdditional];
-        }
-    } else {
-        [_additionalLabel setText: _checkAdditionalString];
-    }
-}
 
 @end

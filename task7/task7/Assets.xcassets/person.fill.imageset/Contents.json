@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "person.fill-1.png",
+      "filename" : "person.fill.png",
       "idiom" : "iphone",
       "scale" : "1x"
     },
     {
-      "filename" : "person.fill.png",
+      "filename" : "person.fill-1.png",
       "idiom" : "iphone",
       "scale" : "2x"
     },
