@@ -29,7 +29,7 @@
 - (void)createRsSchoolLabel {
     UILabel *rsSchoolLabel = [UILabel new];
     rsSchoolLabel.textColor = [UIColor blackColor];
-    rsSchoolLabel.font = [UIFont boldSystemFontOfSize:(36.0)];
+    rsSchoolLabel.font = [UIFont systemFontOfSize:36.0 weight:UIFontWeightBold];
     rsSchoolLabel.numberOfLines = 1;
     rsSchoolLabel.text = @"RSSchool";
     
@@ -73,11 +73,15 @@
     [buttonOne addTarget:self
                   action:@selector(checkOneTouchDown)
         forControlEvents:UIControlEventTouchDown];
+    [buttonOne addTarget:self
+                  action:@selector(checkOneTouchDragExit)
+        forControlEvents:UIControlEventTouchDragExit];
     [buttonOne setTitle:@"1" forState:UIControlStateNormal];
     buttonOne.frame = CGRectMake(23, 45, 50.0, 50.0);
     buttonOne.layer.borderWidth = 2.0;
     buttonOne.layer.cornerRadius = buttonOne.frame.size.width / 2.0;
     buttonOne.layer.borderColor = [[UIColor rsLittleBoyBlue:1.0] CGColor];
+    buttonOne.titleLabel.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightSemibold];
     [buttonOne setTitleColor:[UIColor rsLittleBoyBlue:1.0] forState:UIControlStateNormal];
     
     [buttonTwo addTarget:self
@@ -86,11 +90,16 @@
     [buttonTwo addTarget:self
                   action:@selector(checkTwoTouchDown)
         forControlEvents:UIControlEventTouchDown];
+    [buttonTwo addTarget:self
+                  action:@selector(checkTwoTouchDragExit)
+        forControlEvents:UIControlEventTouchDragExit];
     [buttonTwo setTitle:@"2" forState:UIControlStateNormal];
     buttonTwo.frame = CGRectMake(93, 45, 50.0, 50.0);
     buttonTwo.layer.borderWidth = 2.0;
     buttonTwo.layer.cornerRadius = buttonOne.frame.size.width / 2.0;
     buttonTwo.layer.borderColor = [[UIColor rsLittleBoyBlue:1.0] CGColor];
+    buttonTwo.titleLabel.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightSemibold];
+
     [buttonTwo setTitleColor:[UIColor rsLittleBoyBlue:1.0] forState:UIControlStateNormal];
     
     [buttonThree addTarget:self
@@ -99,12 +108,23 @@
     [buttonThree addTarget:self
                     action:@selector(checkThreeTouchDown)
           forControlEvents:UIControlEventTouchDown];
+    [buttonThree addTarget:self
+                  action:@selector(checkThreeTouchDragExit)
+        forControlEvents:UIControlEventTouchDragExit];
     [buttonThree setTitle:@"3" forState:UIControlStateNormal];
     buttonThree.frame = CGRectMake(163, 45, 50.0, 50.0);
     buttonThree.layer.borderWidth = 2.0;
     buttonThree.layer.cornerRadius = buttonOne.frame.size.width / 2.0;
     buttonThree.layer.borderColor = [[UIColor rsLittleBoyBlue:1.0] CGColor];
+    buttonThree.titleLabel.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightSemibold];
+
     [buttonThree setTitleColor:[UIColor rsLittleBoyBlue:1.0] forState:UIControlStateNormal];
+    
+    view.layer.borderWidth = 2.0;
+    view.layer.cornerRadius = 10.0;
+    
+    view.layer.borderColor = [[UIColor whiteColor] CGColor];
+    
     [view addSubview:label];
     [view addSubview:buttonOne];
     [view addSubview:buttonTwo];
@@ -133,7 +153,12 @@
         CGFloat spacing = 5; // the amount of spacing to appear between image and title
         authorizeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, spacing);
     } else {
-        
+        UIImage *image = [UIImage imageNamed:@"person"];
+        UIImage *imageFill = [UIImage imageNamed:@"person.fill"];
+        [authorizeButton setImage:image forState:UIControlStateNormal];
+        [authorizeButton setImage:imageFill forState:UIControlStateHighlighted];
+        CGFloat spacing = 5; // the amount of spacing to appear between image and title
+        authorizeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, spacing);
     }
     
     [authorizeButton addTarget:self
@@ -143,10 +168,15 @@
     [authorizeButton addTarget:self
                         action:@selector(checkAuthTouchDown)
               forControlEvents:UIControlEventTouchDown];
+    [authorizeButton addTarget:self
+                        action:@selector(checkAuthDragExit)
+              forControlEvents:UIControlEventTouchDragExit];
     authorizeButton.frame = CGRectMake(110.0, 344.0, 156.0, 42.0);
     authorizeButton.layer.borderWidth = 2.0;
     authorizeButton.layer.cornerRadius = 10.0;
     authorizeButton.layer.borderColor = [[UIColor rsLittleBoyBlue:1.0] CGColor];
+    authorizeButton.titleLabel.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightSemibold];
+    
     [authorizeButton setTitleColor:[UIColor rsLittleBoyBlue:1.00] forState:UIControlStateNormal];
     [authorizeButton setTitleColor:[UIColor rsLittleBoyBlue:0.4] forState:UIControlStateHighlighted];
     
@@ -292,6 +322,7 @@
     _loginTextField.delegate = self;
     _passwordTextField.delegate = self;
     
+    self.view.backgroundColor = [UIColor whiteColor];
     _checkAdditionalString = [NSMutableString stringWithString:@""];
     [_viewAdditional setHidden:YES];
 }
@@ -318,6 +349,7 @@
     
     _additionalLabel.text = @"-";
     _checkAdditionalString = [NSMutableString stringWithString:@""];
+    _viewAdditional.layer.borderColor = [[UIColor whiteColor] CGColor];
     [_viewAdditional setHidden:YES];
 }
 
@@ -344,8 +376,8 @@
 - (void)checkAuthDidTap{
     _authorizeButton.backgroundColor = [UIColor whiteColor];
     
-    if([_loginTextField.text  isEqual: @"User"] &&
-       [_passwordTextField.text  isEqual: @"123"]){
+    if([_loginTextField.text  isEqual: @"username"] &&
+       [_passwordTextField.text  isEqual: @"password"]){
         [self stateSuccess];
     } else {
         [self stateError];
@@ -354,6 +386,10 @@
 
 - (void)checkAuthTouchDown{
     _authorizeButton.backgroundColor = [UIColor rsLittleBoyBlue:0.2];
+}
+
+- (void)checkAuthDragExit{
+    _authorizeButton.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)checkOneTouchDown{
@@ -365,12 +401,38 @@
 - (void)checkThreeTouchDown{
     _buttonThree.backgroundColor = [UIColor rsLittleBoyBlue:0.2];
 }
-
+- (void)checkOneTouchDragExit{
+    _buttonOne.backgroundColor = [UIColor whiteColor];
+}
+- (void)checkTwoTouchDragExit{
+    _buttonTwo.backgroundColor = [UIColor whiteColor];
+}
+- (void)checkThreeTouchDragExit{
+    _buttonThree.backgroundColor = [UIColor whiteColor];
+}
 
 - (void)stateErrorForAdditional{
-    _viewAdditional.layer.borderWidth = 2.0;
-    _viewAdditional.layer.cornerRadius = 10.0;
+    _checkAdditionalString = [NSMutableString stringWithString:@""];
+    _additionalLabel.text = @"-";
     _viewAdditional.layer.borderColor = [[UIColor rsVenetialRed] CGColor];
+}
+
+- (void)stateSeccuessForAdditional{
+    [_additionalLabel setText: _checkAdditionalString];
+    _viewAdditional.layer.borderColor = [[UIColor rsTorquoiseGreen] CGColor];
+    
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:@"Welcome!"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Refresh"
+                                                            style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction * action) {
+        [self stateReady];
+    }];
+
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)checkOneDidTap{
@@ -391,27 +453,14 @@
     _buttonThree.backgroundColor = [UIColor whiteColor];
 }
 
+
 - (void) checkedAdditional {
     if (_checkAdditionalString.length > 2){
         if(![_checkAdditionalString isEqual:@"132"]){
             [self stateErrorForAdditional];
-            _checkAdditionalString = [NSMutableString stringWithString:@""];
-            _additionalLabel.text = @"-";
         } else if ([_checkAdditionalString isEqual:@"132"]){
-            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
-                                                                           message:@"Welcome!"
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
-
-            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Refresh"
-                                                                    style:UIAlertActionStyleDestructive
-                                                                  handler:^(UIAlertAction * action) {
-                [self stateReady];
-            }];
-
-            [alert addAction:defaultAction];
-            [self presentViewController:alert animated:YES completion:nil];
+            [self stateSeccuessForAdditional];
         }
-        
     } else {
         [_additionalLabel setText: _checkAdditionalString];
     }
