@@ -44,6 +44,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     _checkAdditionalString = [NSMutableString stringWithString:@""];
     [_viewAdditional setHidden:YES];
+    [self.view endEditing:YES];
 }
 
 - (void)createRsSchoolLabel {
@@ -73,91 +74,6 @@
     _rsSchoolLabel = rsSchoolLabel;
 }
 
-
-- (void) createAdditionalVerification{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(70.0, 510.0, 240.0, 115.0)];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(102.5, 15, 32, 22)];
-    UIButton *buttonOne = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIButton *buttonTwo = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIButton *buttonThree = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    label.textColor = [UIColor blackColor];
-    label.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightSemibold];
-    label.numberOfLines = 1;
-    label.text = @"-";
-    label.textAlignment = NSTextAlignmentCenter;
-    
-    [buttonOne addTarget:self
-                  action:@selector(checkOneDidTap)
-        forControlEvents:UIControlEventTouchUpInside];
-    [buttonOne addTarget:self
-                  action:@selector(checkOneTouchDown)
-        forControlEvents:UIControlEventTouchDown];
-    [buttonOne addTarget:self
-                  action:@selector(checkOneTouchDragExit)
-        forControlEvents:UIControlEventTouchDragExit];
-    [buttonOne setTitle:@"1" forState:UIControlStateNormal];
-    buttonOne.frame = CGRectMake(23, 45, 50.0, 50.0);
-    buttonOne.layer.borderWidth = 2.0;
-    buttonOne.layer.cornerRadius = buttonOne.frame.size.width / 2.0;
-    buttonOne.layer.borderColor = [[UIColor rsLittleBoyBlue:1.0] CGColor];
-    buttonOne.titleLabel.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightSemibold];
-    [buttonOne setTitleColor:[UIColor rsLittleBoyBlue:1.0] forState:UIControlStateNormal];
-    
-    [buttonTwo addTarget:self
-                  action:@selector(checkTwoDidTap)
-        forControlEvents:UIControlEventTouchUpInside];
-    [buttonTwo addTarget:self
-                  action:@selector(checkTwoTouchDown)
-        forControlEvents:UIControlEventTouchDown];
-    [buttonTwo addTarget:self
-                  action:@selector(checkTwoTouchDragExit)
-        forControlEvents:UIControlEventTouchDragExit];
-    [buttonTwo setTitle:@"2" forState:UIControlStateNormal];
-    buttonTwo.frame = CGRectMake(93, 45, 50.0, 50.0);
-    buttonTwo.layer.borderWidth = 2.0;
-    buttonTwo.layer.cornerRadius = buttonOne.frame.size.width / 2.0;
-    buttonTwo.layer.borderColor = [[UIColor rsLittleBoyBlue:1.0] CGColor];
-    buttonTwo.titleLabel.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightSemibold];
-    [buttonTwo setTitleColor:[UIColor rsLittleBoyBlue:1.0] forState:UIControlStateNormal];
-    
-    [buttonThree addTarget:self
-                    action:@selector(checkThreeDidTap)
-          forControlEvents:UIControlEventTouchUpInside];
-    [buttonThree addTarget:self
-                    action:@selector(checkThreeTouchDown)
-          forControlEvents:UIControlEventTouchDown];
-    [buttonThree addTarget:self
-                  action:@selector(checkThreeTouchDragExit)
-        forControlEvents:UIControlEventTouchDragExit];
-    [buttonThree setTitle:@"3" forState:UIControlStateNormal];
-    buttonThree.frame = CGRectMake(163, 45, 50.0, 50.0);
-    buttonThree.layer.borderWidth = 2.0;
-    buttonThree.layer.cornerRadius = buttonOne.frame.size.width / 2.0;
-    buttonThree.layer.borderColor = [[UIColor rsLittleBoyBlue:1.0] CGColor];
-    buttonThree.titleLabel.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightSemibold];
-
-    [buttonThree setTitleColor:[UIColor rsLittleBoyBlue:1.0] forState:UIControlStateNormal];
-    
-    view.layer.borderWidth = 2.0;
-    view.layer.cornerRadius = 10.0;
-    view.layer.borderColor = [[UIColor whiteColor] CGColor];
-    
-    [view addSubview:label];
-    [view addSubview:buttonOne];
-    [view addSubview:buttonTwo];
-    [view addSubview:buttonThree];
-    
-    _additionalLabel = label;
-    _viewAdditional = view;
-    _buttonOne = buttonOne;
-    _buttonTwo = buttonTwo;
-    _buttonThree = buttonThree;
-    
-    [self.view addSubview:view];
-}
-
-
 - (void)createLoginAndPasswordFields {
     UITextField *loginTextField = [[UITextField alloc] initWithFrame:CGRectMake(36.0, 200.0, 300.0, 34.0)];
     UITextField *passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(36.0, 264.0, 300.0, 34.0)];
@@ -166,15 +82,18 @@
     if (@available(iOS 13.0, *)) {
         UIImage *image = [UIImage systemImageNamed:@"person"];
         UIImage *imageFill = [UIImage systemImageNamed:@"person.fill"];
+        
         [authorizeButton setImage:image forState:UIControlStateNormal];
         [authorizeButton setImage:imageFill forState:UIControlStateHighlighted];
-        CGFloat spacing = 5; // the amount of spacing to appear between image and title
-        authorizeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, spacing);
+        
+        authorizeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 5);
     } else {
         UIImage *image = [[UIImage alloc] imageWithImage:[UIImage imageNamed:@"person"] convertToSize:CGSizeMake(17, 17)];
         UIImage *imageFill = [[UIImage alloc] imageWithImage:[UIImage imageNamed:@"person.fill"] convertToSize:CGSizeMake(17, 17)];
+        
         [authorizeButton setImage:image forState:UIControlStateNormal];
         [authorizeButton setImage:imageFill forState:UIControlStateHighlighted];
+        
         authorizeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 5);
     }
     
@@ -202,7 +121,7 @@
     loginTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     loginTextField.textContentType = UITextContentTypeUsername;
     loginTextField.keyboardType = UIKeyboardTypeDefault;
-    loginTextField.returnKeyType = UIReturnKeyDone;
+    loginTextField.returnKeyType = UIReturnKeyDefault;
     loginTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     loginTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     loginTextField.layer.borderWidth = 1.5;
@@ -216,7 +135,7 @@
     passwordTextField.keyboardType = UIKeyboardTypeDefault;
     passwordTextField.textContentType = UITextContentTypePassword;
     passwordTextField.secureTextEntry = YES;
-    passwordTextField.returnKeyType = UIReturnKeyDone;
+    passwordTextField.returnKeyType = UIReturnKeyDefault;
     passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     passwordTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     passwordTextField.layer.borderWidth = 1.5;
@@ -326,6 +245,93 @@
 //                                 attribute:NSLayoutAttributeLeading
 //                                multiplier:1.0
 //                                  constant:0].active = YES;
+}
+
+- (void) createAdditionalVerification{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(70.0, 510.0, 240.0, 115.0)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(102.5, 15, 32, 22)];
+    UIButton *buttonOne = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *buttonTwo = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *buttonThree = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    label.textColor = [UIColor blackColor];
+    label.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightSemibold];
+    label.numberOfLines = 1;
+    label.text = @"-";
+    label.textAlignment = NSTextAlignmentCenter;
+    
+    [buttonOne addTarget:self
+                  action:@selector(checkOneDidTap)
+        forControlEvents:UIControlEventTouchUpInside];
+    [buttonOne addTarget:self
+                  action:@selector(checkOneTouchDown)
+        forControlEvents:UIControlEventTouchDown];
+    [buttonOne addTarget:self
+                  action:@selector(checkOneTouchDragExit)
+        forControlEvents:UIControlEventTouchDragExit];
+    [buttonOne setTitle:@"1" forState:UIControlStateNormal];
+    buttonOne.frame = CGRectMake(23, 45, 50.0, 50.0);
+    buttonOne.layer.borderWidth = 2.0;
+    buttonOne.layer.cornerRadius = buttonOne.frame.size.width / 2.0;
+    buttonOne.layer.borderColor = [[UIColor rsLittleBoyBlue:1.0] CGColor];
+    buttonOne.titleLabel.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightSemibold];
+    [buttonOne setTitleColor:[UIColor rsLittleBoyBlue:1.0] forState:UIControlStateNormal];
+    
+    [buttonTwo addTarget:self
+                  action:@selector(checkTwoDidTap)
+        forControlEvents:UIControlEventTouchUpInside];
+    [buttonTwo addTarget:self
+                  action:@selector(checkTwoTouchDown)
+        forControlEvents:UIControlEventTouchDown];
+    [buttonTwo addTarget:self
+                  action:@selector(checkTwoTouchDragExit)
+        forControlEvents:UIControlEventTouchDragExit];
+    [buttonTwo setTitle:@"2" forState:UIControlStateNormal];
+    buttonTwo.frame = CGRectMake(93, 45, 50.0, 50.0);
+    buttonTwo.layer.borderWidth = 2.0;
+    buttonTwo.layer.cornerRadius = buttonOne.frame.size.width / 2.0;
+    buttonTwo.layer.borderColor = [[UIColor rsLittleBoyBlue:1.0] CGColor];
+    buttonTwo.titleLabel.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightSemibold];
+    [buttonTwo setTitleColor:[UIColor rsLittleBoyBlue:1.0] forState:UIControlStateNormal];
+    
+    [buttonThree addTarget:self
+                    action:@selector(checkThreeDidTap)
+          forControlEvents:UIControlEventTouchUpInside];
+    [buttonThree addTarget:self
+                    action:@selector(checkThreeTouchDown)
+          forControlEvents:UIControlEventTouchDown];
+    [buttonThree addTarget:self
+                  action:@selector(checkThreeTouchDragExit)
+        forControlEvents:UIControlEventTouchDragExit];
+    [buttonThree setTitle:@"3" forState:UIControlStateNormal];
+    buttonThree.frame = CGRectMake(163, 45, 50.0, 50.0);
+    buttonThree.layer.borderWidth = 2.0;
+    buttonThree.layer.cornerRadius = buttonOne.frame.size.width / 2.0;
+    buttonThree.layer.borderColor = [[UIColor rsLittleBoyBlue:1.0] CGColor];
+    buttonThree.titleLabel.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightSemibold];
+
+    [buttonThree setTitleColor:[UIColor rsLittleBoyBlue:1.0] forState:UIControlStateNormal];
+    
+    view.layer.borderWidth = 2.0;
+    view.layer.cornerRadius = 10.0;
+    view.layer.borderColor = [[UIColor whiteColor] CGColor];
+    
+    [view addSubview:label];
+    [view addSubview:buttonOne];
+    [view addSubview:buttonTwo];
+    [view addSubview:buttonThree];
+    
+    _additionalLabel = label;
+    _viewAdditional = view;
+    _buttonOne = buttonOne;
+    _buttonTwo = buttonTwo;
+    _buttonThree = buttonThree;
+    
+    [self.view addSubview:view];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
