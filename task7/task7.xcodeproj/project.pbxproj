@@ -16,6 +16,7 @@
 		4F27C7602691C4D5000C7E60 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F27C75F2691C4D5000C7E60 /* main.m */; };
 		4F27C76A2691C4D6000C7E60 /* task7Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F27C7692691C4D6000C7E60 /* task7Tests.m */; };
 		4F27C7752691C4D6000C7E60 /* task7UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F27C7742691C4D6000C7E60 /* task7UITests.m */; };
+		FA6C4B772692E9CC00A97E3E /* ColorExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6C4B762692E9CC00A97E3E /* ColorExtensions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,8 @@
 		4F27C7702691C4D6000C7E60 /* task7UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = task7UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F27C7742691C4D6000C7E60 /* task7UITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = task7UITests.m; sourceTree = "<group>"; };
 		4F27C7762691C4D6000C7E60 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA6C4B752692E9CC00A97E3E /* ColorExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorExtensions.h; sourceTree = "<group>"; };
+		FA6C4B762692E9CC00A97E3E /* ColorExtensions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ColorExtensions.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +113,8 @@
 				4F27C7512691C4D4000C7E60 /* SceneDelegate.m */,
 				4F27C7532691C4D4000C7E60 /* ViewController.h */,
 				4F27C7542691C4D4000C7E60 /* ViewController.m */,
+				FA6C4B752692E9CC00A97E3E /* ColorExtensions.h */,
+				FA6C4B762692E9CC00A97E3E /* ColorExtensions.m */,
 				4F27C7562691C4D4000C7E60 /* Main.storyboard */,
 				4F27C7592691C4D5000C7E60 /* Assets.xcassets */,
 				4F27C75B2691C4D5000C7E60 /* LaunchScreen.storyboard */,
@@ -270,6 +275,7 @@
 				4F27C74F2691C4D4000C7E60 /* AppDelegate.m in Sources */,
 				4F27C7602691C4D5000C7E60 /* main.m in Sources */,
 				4F27C7522691C4D4000C7E60 /* SceneDelegate.m in Sources */,
+				FA6C4B772692E9CC00A97E3E /* ColorExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
