@@ -62,7 +62,7 @@
     UIButton *buttonThree = [UIButton buttonWithType:UIButtonTypeCustom];
     
     label.textColor = [UIColor blackColor];
-    label.font = [UIFont boldSystemFontOfSize:(18.0)];
+    label.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightSemibold];
     label.numberOfLines = 1;
     label.text = @"-";
     label.textAlignment = NSTextAlignmentCenter;
@@ -99,7 +99,6 @@
     buttonTwo.layer.cornerRadius = buttonOne.frame.size.width / 2.0;
     buttonTwo.layer.borderColor = [[UIColor rsLittleBoyBlue:1.0] CGColor];
     buttonTwo.titleLabel.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightSemibold];
-
     [buttonTwo setTitleColor:[UIColor rsLittleBoyBlue:1.0] forState:UIControlStateNormal];
     
     [buttonThree addTarget:self
@@ -122,7 +121,6 @@
     
     view.layer.borderWidth = 2.0;
     view.layer.cornerRadius = 10.0;
-    
     view.layer.borderColor = [[UIColor whiteColor] CGColor];
     
     [view addSubview:label];
@@ -153,18 +151,18 @@
         CGFloat spacing = 5; // the amount of spacing to appear between image and title
         authorizeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, spacing);
     } else {
-        UIImage *image = [UIImage imageNamed:@"person"];
-        UIImage *imageFill = [UIImage imageNamed:@"person.fill"];
-        [authorizeButton setImage:image forState:UIControlStateNormal];
-        [authorizeButton setImage:imageFill forState:UIControlStateHighlighted];
-        CGFloat spacing = 5; // the amount of spacing to appear between image and title
-        authorizeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, spacing);
+//        UIImage *image = [UIImage imageNamed:@"person"];
+//        UIImage *imageFill = [UIImage imageNamed:@"person.fill"];
+//        [authorizeButton setImage:image forState:UIControlStateNormal];
+//        [authorizeButton setImage:imageFill forState:UIControlStateHighlighted];
+//        CGFloat spacing = 5; // the amount of spacing to appear between image and title
+//        authorizeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, spacing);
     }
     
+    [authorizeButton setTitle:@"Authorize" forState:UIControlStateNormal];
     [authorizeButton addTarget:self
                         action:@selector(checkAuthDidTap)
               forControlEvents:UIControlEventTouchUpInside];
-    [authorizeButton setTitle:@"Authorize" forState:UIControlStateNormal];
     [authorizeButton addTarget:self
                         action:@selector(checkAuthTouchDown)
               forControlEvents:UIControlEventTouchDown];
@@ -176,7 +174,6 @@
     authorizeButton.layer.cornerRadius = 10.0;
     authorizeButton.layer.borderColor = [[UIColor rsLittleBoyBlue:1.0] CGColor];
     authorizeButton.titleLabel.font = [UIFont systemFontOfSize:20.0 weight:UIFontWeightSemibold];
-    
     [authorizeButton setTitleColor:[UIColor rsLittleBoyBlue:1.00] forState:UIControlStateNormal];
     [authorizeButton setTitleColor:[UIColor rsLittleBoyBlue:0.4] forState:UIControlStateHighlighted];
     
@@ -353,9 +350,8 @@
     [_viewAdditional setHidden:YES];
 }
 
-- (void)stateError{
-    _passwordTextField.layer.borderColor = [[UIColor rsVenetialRed] CGColor];
-    _loginTextField.layer.borderColor = [[UIColor rsVenetialRed] CGColor];
+- (void)stateError:(UITextField *) textField{
+    textField.layer.borderColor = [[UIColor rsVenetialRed] CGColor];
 }
 
 - (void)stateSuccess{
@@ -376,11 +372,20 @@
 - (void)checkAuthDidTap{
     _authorizeButton.backgroundColor = [UIColor whiteColor];
     
-    if([_loginTextField.text  isEqual: @"username"] &&
-       [_passwordTextField.text  isEqual: @"password"]){
+    if(![_loginTextField.text  isEqual: @"username"]){
+        [self stateError:_loginTextField];
+    } else if([_loginTextField.text  isEqual: @"username"]) {
+        _loginTextField.layer.borderColor = [[UIColor rsTorquoiseGreen] CGColor];
+    }
+    
+    if(![_passwordTextField.text  isEqual: @"password"]){
+        [self stateError:_passwordTextField];
+    } else if([_passwordTextField.text  isEqual: @"password"]){
+        _passwordTextField.layer.borderColor = [[UIColor rsTorquoiseGreen] CGColor];
+    }
+    
+    if([_loginTextField.text  isEqual: @"username"] && [_passwordTextField.text  isEqual: @"password"]){
         [self stateSuccess];
-    } else {
-        [self stateError];
     }
 }
 
@@ -421,8 +426,8 @@
     [_additionalLabel setText: _checkAdditionalString];
     _viewAdditional.layer.borderColor = [[UIColor rsTorquoiseGreen] CGColor];
     
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
-                                                                   message:@"Welcome!"
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Welcome"
+                                                                   message:@"You are succesfuly authorized!"
                                                             preferredStyle:UIAlertControllerStyleAlert];
 
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Refresh"
