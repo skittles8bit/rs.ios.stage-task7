@@ -96,7 +96,7 @@
         authorizeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 5);
     } else {
         UIImage *image = [[UIImage alloc] imageWithImage:[UIImage imageNamed:@"person"] convertToSize:CGSizeMake(17, 17)];
-        UIImage *imageFill = [[UIImage alloc] imageWithImage:[UIImage imageNamed:@"person.fill"] convertToSize:CGSizeMake(17, 17)];
+        UIImage *imageFill = [[UIImage alloc] imageWithImage:[UIImage imageNamed:@"person-fill"] convertToSize:CGSizeMake(17, 17)];
         
         [authorizeButton setImage:image forState:UIControlStateNormal];
         [authorizeButton setImage:imageFill forState:UIControlStateHighlighted];
