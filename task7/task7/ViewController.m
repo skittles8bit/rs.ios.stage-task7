@@ -26,6 +26,8 @@
 
 @implementation ViewController
 
+// MARK: - LifeCycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -47,6 +49,9 @@
     [self.view endEditing:YES];
 }
 
+// MARK: - Create Elements
+
+//Create RSSchool Label and set constraints
 - (void)createRsSchoolLabel {
     UILabel *rsSchoolLabel = [UILabel new];
     rsSchoolLabel.textColor = [UIColor blackColor];
@@ -74,11 +79,13 @@
     _rsSchoolLabel = rsSchoolLabel;
 }
 
+//Create Login textField, Password textField
 - (void)createLoginAndPasswordFields {
     UITextField *loginTextField = [[UITextField alloc] initWithFrame:CGRectMake(36.0, 200.0, 300.0, 34.0)];
     UITextField *passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(36.0, 264.0, 300.0, 34.0)];
     UIButton *authorizeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
+    // systemImageNamed func not available in iOS 12, otherwise we will use imageWithImage func
     if (@available(iOS 13.0, *)) {
         UIImage *image = [UIImage systemImageNamed:@"person"];
         UIImage *imageFill = [UIImage systemImageNamed:@"person.fill"];
@@ -98,6 +105,8 @@
     }
     
     [authorizeButton setTitle:@"Authorize" forState:UIControlStateNormal];
+    
+    // Create events for authorized button
     [authorizeButton addTarget:self
                         action:@selector(checkAuthDidTap)
               forControlEvents:UIControlEventTouchUpInside];
@@ -107,6 +116,7 @@
     [authorizeButton addTarget:self
                         action:@selector(checkAuthDragExit)
               forControlEvents:UIControlEventTouchDragExit];
+    
     authorizeButton.frame = CGRectMake(110.0, 344.0, 156.0, 42.0);
     authorizeButton.layer.borderWidth = 2.0;
     authorizeButton.layer.cornerRadius = 10.0;
@@ -121,12 +131,13 @@
     loginTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     loginTextField.textContentType = UITextContentTypeUsername;
     loginTextField.keyboardType = UIKeyboardTypeDefault;
-    loginTextField.returnKeyType = UIReturnKeyDefault;
+    loginTextField.returnKeyType = UIReturnKeyNext;
     loginTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     loginTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     loginTextField.layer.borderWidth = 1.5;
     loginTextField.layer.cornerRadius = 5.0;
     loginTextField.layer.borderColor = [[UIColor rsBlackCoral] CGColor];
+    loginTextField.tag = 1;
     
     passwordTextField.borderStyle = UITextBorderStyleRoundedRect;
     passwordTextField.font = [UIFont systemFontOfSize:15];
@@ -141,6 +152,7 @@
     passwordTextField.layer.borderWidth = 1.5;
     passwordTextField.layer.cornerRadius = 5.0;
     passwordTextField.layer.borderColor = [[UIColor rsBlackCoral] CGColor];
+    passwordTextField.tag = 2;
     
     [self.view addSubview:loginTextField];
     [self.view addSubview:passwordTextField];
@@ -247,6 +259,7 @@
 //                                  constant:0].active = YES;
 }
 
+//Create additional varification (buttons, label, and view)
 - (void) createAdditionalVerification{
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(70.0, 510.0, 240.0, 115.0)];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(102.5, 15, 32, 22)];
@@ -260,6 +273,7 @@
     label.text = @"-";
     label.textAlignment = NSTextAlignmentCenter;
     
+    // create events for button
     [buttonOne addTarget:self
                   action:@selector(checkOneDidTap)
         forControlEvents:UIControlEventTouchUpInside];
@@ -270,6 +284,7 @@
                   action:@selector(checkOneTouchDragExit)
         forControlEvents:UIControlEventTouchDragExit];
     [buttonOne setTitle:@"1" forState:UIControlStateNormal];
+    
     buttonOne.frame = CGRectMake(23, 45, 50.0, 50.0);
     buttonOne.layer.borderWidth = 2.0;
     buttonOne.layer.cornerRadius = buttonOne.frame.size.width / 2.0;
@@ -277,6 +292,7 @@
     buttonOne.titleLabel.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightSemibold];
     [buttonOne setTitleColor:[UIColor rsLittleBoyBlue:1.0] forState:UIControlStateNormal];
     
+    // create events for button
     [buttonTwo addTarget:self
                   action:@selector(checkTwoDidTap)
         forControlEvents:UIControlEventTouchUpInside];
@@ -294,6 +310,7 @@
     buttonTwo.titleLabel.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightSemibold];
     [buttonTwo setTitleColor:[UIColor rsLittleBoyBlue:1.0] forState:UIControlStateNormal];
     
+    // create events for button
     [buttonThree addTarget:self
                     action:@selector(checkThreeDidTap)
           forControlEvents:UIControlEventTouchUpInside];
@@ -330,26 +347,9 @@
     [self.view addSubview:view];
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    [self.view endEditing:YES];
-}
+// MARK: Functins
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    return true;
-}
-
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    if (textField == _passwordTextField) {
-        _passwordTextField.layer.borderColor = [[UIColor rsBlackCoral] CGColor];
-    }
-    
-    if (textField == _loginTextField) {
-        _loginTextField.layer.borderColor = [[UIColor rsBlackCoral] CGColor];
-    }
-    
-    return true;
-}
+//Standard condition
 
 - (void)stateReady{
     _passwordTextField.layer.borderColor = [[UIColor rsBlackCoral] CGColor];
@@ -372,9 +372,13 @@
     [_viewAdditional setHidden:YES];
 }
 
+//Error condition
+
 - (void)stateError:(UITextField *) textField{
     textField.layer.borderColor = [[UIColor rsVenetialRed] CGColor];
 }
+
+//Success condition
 
 - (void)stateSuccess{
     _passwordTextField.layer.borderColor = [[UIColor rsTorquoiseGreen] CGColor];
@@ -391,6 +395,7 @@
     [_viewAdditional setHidden:NO];
 }
 
+//Error condition for additional check
 
 - (void)stateErrorForAdditional{
     _checkAdditionalString = [NSMutableString stringWithString:@""];
@@ -398,7 +403,9 @@
     _viewAdditional.layer.borderColor = [[UIColor rsVenetialRed] CGColor];
 }
 
-- (void)stateSeccuessForAdditional{
+//Success condition for additional check
+
+- (void)stateSuccessForAdditional{
     [_additionalLabel setText: _checkAdditionalString];
     _viewAdditional.layer.borderColor = [[UIColor rsTorquoiseGreen] CGColor];
     
@@ -416,19 +423,59 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+//Check condition Additional Check
 
 - (void) checkedAdditional {
     if (_checkAdditionalString.length > 2){
         if(![_checkAdditionalString isEqual:@"132"]){
             [self stateErrorForAdditional];
         } else if ([_checkAdditionalString isEqual:@"132"]){
-            [self stateSeccuessForAdditional];
+            [self stateSuccessForAdditional];
         }
     } else {
         [_additionalLabel setText: _checkAdditionalString];
     }
 }
 
+// MARK: - Events
+
+//Hide keyboard if touch on view (background)
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
+}
+
+//Hide keyboard if touch on return in keyboard
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    NSInteger nextTag = textField.tag + 1;
+    // Try to find next responder
+    UIResponder* nextResponder = [textField.superview viewWithTag:nextTag];
+    
+    if (nextResponder) {
+        // Found next responder, so set it.
+       [nextResponder becomeFirstResponder];
+    } else {
+       // Not found, so remove keyboard.
+       [textField resignFirstResponder];
+    }
+    
+    return NO; // We do not want UITextField to insert line-breaks.
+}
+
+//Change colors textFields if start editing
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    if (textField == _passwordTextField) {
+        _passwordTextField.layer.borderColor = [[UIColor rsBlackCoral] CGColor];
+    }
+    
+    if (textField == _loginTextField) {
+        _loginTextField.layer.borderColor = [[UIColor rsBlackCoral] CGColor];
+    }
+    
+    return true;
+}
 
 - (void)checkAuthDidTap{
     _authorizeButton.backgroundColor = [UIColor whiteColor];
